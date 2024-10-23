@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaijia.blog.mapper.BlogArticleMapper">
+
+    <resultMap type="BlogArticle" id="BlogArticleResult">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="authorId" column="author_id" />
+        <result property="authorNickName" column="author_nick_name" />
+        <result property="categoryId" column="category_id" />
+        <result property="categoryName" column="category_name" />
+        <result property="status" column="status" />
+        <result property="viewCount" column="view_count" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectBlogArticleVo">
+        select
+            a.id, a.title, a.content,
+            a.author_id, a.category_id,
+            a.status, a.view_count,
+            a.create_time, a.update_time,
+            b.nick_name as author_nick_name,
+            c.name as category_name
+            from blog_article as a
+                left join sys_user as b on a.author_id = b.user_id
+                left join blog_category as c on a.category_id = c.id
+    </sql>
+
+    <select id="selectBlogArticleList" parameterType="BlogArticle" resultMap="BlogArticleResult">
+        <include refid="selectBlogArticleVo" />
+        <where>
+            <if test="title != null and title != ''"> and a.title like concat('%', #{title}, '%')</if>
+            <if test="content != null and content != ''"> and a.content = #{content}</if>
+            <if test="authorId != null"> and a.author_id = #{authorId}</if>
+            <if test="categoryId != null"> and a.category_id = #{categoryId}</if>
+            <if test="status != null and status != ''"> and a.status = #{status}</if>
+            <if test="viewCount != null"> and a.view_count = #{viewCount}</if>
+            <if test="createTime != null"> and a.create_time = #{createTime}</if>
+            <if test="updateTime != null"> and a.update_time = #{updateTime}</if>
+            <if test="authorNickName != null and authorNickName != ''"> and (b.nick_name like concat('%', #{authorNickName}, '%') OR b.nick_name IS NULL)</if>
+            <if test="categoryName != null and categoryName != ''"> and (c.name like concat('%', #{categoryName}, '%')OR c.name IS NULL)</if>
+        </where>
+    </select>
+
+    <select id="selectBlogArticleById" parameterType="Long" resultMap="BlogArticleResult">
+        <include refid="selectBlogArticleVo" />
+        where a.id = #{id}
+    </select>
+
+    <insert id="insertBlogArticle" parameterType="BlogArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into blog_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="authorId != null">author_id,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="status != null">status,</if>
+            <if test="viewCount != null">view_count,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="authorId != null">#{authorId},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="viewCount != null">#{viewCount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBlogArticle" parameterType="BlogArticle">
+        update blog_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="authorId != null">author_id = #{authorId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBlogArticleById" parameterType="Long">
+        delete from blog_article where id = #{id}
+    </delete>
+
+    <delete id="deleteBlogArticleByIds" parameterType="String">
+        delete from blog_article where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

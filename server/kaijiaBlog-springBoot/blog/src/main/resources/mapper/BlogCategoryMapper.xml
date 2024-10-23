@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaijia.blog.mapper.BlogCategoryMapper">
+    
+    <resultMap type="BlogCategory" id="BlogCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBlogCategoryVo">
+        select id, name, description, create_time from blog_category
+    </sql>
+
+    <select id="selectBlogCategoryList" parameterType="BlogCategory" resultMap="BlogCategoryResult">
+        <include refid="selectBlogCategoryVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogCategoryById" parameterType="Long" resultMap="BlogCategoryResult">
+        <include refid="selectBlogCategoryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBlogCategory" parameterType="BlogCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into blog_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null">description,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogCategory" parameterType="BlogCategory">
+        update blog_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBlogCategoryById" parameterType="Long">
+        delete from blog_category where id = #{id}
+    </delete>
+
+    <delete id="deleteBlogCategoryByIds" parameterType="String">
+        delete from blog_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

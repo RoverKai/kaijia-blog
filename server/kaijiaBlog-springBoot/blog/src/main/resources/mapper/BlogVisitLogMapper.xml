@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaijia.blog.mapper.BlogVisitLogMapper">
+
+    <resultMap type="BlogVisitLog" id="BlogVisitLogResult">
+        <result property="id"    column="id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="visitedAt"    column="visited_at"    />
+    </resultMap>
+
+    <sql id="selectBlogVisitLogVo">
+        select id, article_id, user_id, ip_address, visited_at from blog_visit_log
+    </sql>
+
+    <select id="selectBlogVisitLogList" parameterType="BlogVisitLog" resultMap="BlogVisitLogResult">
+        <include refid="selectBlogVisitLogVo"/>
+        <where>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address like concat('%', #{ipAddress}, '%')</if>
+            <if test="params.beginVisitedAt != null and params.beginVisitedAt != '' and params.endVisitedAt != null and params.endVisitedAt != ''"> and visited_at between #{params.beginVisitedAt} and #{params.endVisitedAt}</if>
+        </where>
+    </select>
+
+    <select id="selectBlogVisitLogById" parameterType="Long" resultMap="BlogVisitLogResult">
+        <include refid="selectBlogVisitLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBlogVisitLog" parameterType="BlogVisitLog" useGeneratedKeys="true" keyProperty="id">
+        insert into blog_visit_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="ipAddress != null and ipAddress != ''">ip_address,</if>
+            <if test="visitedAt != null">visited_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="ipAddress != null and ipAddress != ''">#{ipAddress},</if>
+            <if test="visitedAt != null">#{visitedAt},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBlogVisitLog" parameterType="BlogVisitLog">
+        update blog_visit_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="ipAddress != null and ipAddress != ''">ip_address = #{ipAddress},</if>
+            <if test="visitedAt != null">visited_at = #{visitedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBlogVisitLogById" parameterType="Long">
+        delete from blog_visit_log where id = #{id}
+    </delete>
+
+    <delete id="deleteBlogVisitLogByIds" parameterType="String">
+        delete from blog_visit_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

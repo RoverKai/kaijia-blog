@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaijia.blog.mapper.BlogArticleLikeMapper">
+
+    <resultMap type="BlogArticleLike" id="BlogArticleLikeResult">
+        <result property="articleId"    column="article_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBlogArticleLikeVo">
+        select article_id, user_id, create_time from blog_article_like
+    </sql>
+
+    <select id="selectBlogArticleLikeList" parameterType="BlogArticleLike" resultMap="BlogArticleLikeResult">
+        <include refid="selectBlogArticleLikeVo"/>
+        <where>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBlogArticleLikeByArticleId" parameterType="Long" resultMap="BlogArticleLikeResult">
+        <include refid="selectBlogArticleLikeVo"/>
+        where article_id = #{articleId}
+    </select>
+
+    <insert id="insertBlogArticleLike" parameterType="BlogArticleLike">
+        insert into blog_article_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBlogArticleLike" parameterType="BlogArticleLike">
+        update blog_article_like
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="deleteBlogArticleLikeByArticleId" parameterType="Long">
+        delete from blog_article_like where article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteBlogArticleLikeByArticleIds" parameterType="String">
+        delete from blog_article_like where article_id in
+        <foreach item="articleId" collection="array" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </delete>
+</mapper>
