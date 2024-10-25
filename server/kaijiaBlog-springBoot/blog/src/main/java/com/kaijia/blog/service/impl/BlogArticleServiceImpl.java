@@ -1,14 +1,10 @@
 package com.kaijia.blog.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.kaijia.blog.controller.vo.VArticle;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import com.kaijia.blog.mapper.BlogArticleMapper;
 import com.kaijia.blog.domain.BlogArticle;
@@ -25,8 +21,7 @@ public class BlogArticleServiceImpl implements IBlogArticleService
 {
     @Autowired
     private BlogArticleMapper blogArticleMapper;
-    @Autowired
-    private SysUserMapper sysUserMapper;
+
     /**
      * 查询文章管理
      * 
@@ -36,9 +31,17 @@ public class BlogArticleServiceImpl implements IBlogArticleService
     @Override
     public BlogArticle selectBlogArticleById(Long id)
     {
-        return blogArticleMapper.selectBlogArticleById(id);
+        BlogArticle blogArticle = blogArticleMapper.selectBlogArticleById(id);
+        Long viewCount = blogArticle.getViewCount();
+        blogArticle.setViewCount(viewCount+1);
+        blogArticleMapper.updateBlogArticle(blogArticle);
+        return blogArticle;
     }
 
+    @Override
+    public List<VArticle> list4User(VArticle vArticle) {
+        return blogArticleMapper.list4User(vArticle);
+    }
     /**
      * 查询文章管理列表
      * 
@@ -48,7 +51,11 @@ public class BlogArticleServiceImpl implements IBlogArticleService
     @Override
     public List<BlogArticle> selectBlogArticleList(BlogArticle blogArticle)
     {
-        return blogArticleMapper.selectBlogArticleList(blogArticle);
+        List<BlogArticle> blogArticles = blogArticleMapper.selectBlogArticleList(blogArticle);
+        blogArticles.stream().forEach(article -> {
+            article.setContent(null);
+        });
+        return blogArticles;
     }
 
     /**

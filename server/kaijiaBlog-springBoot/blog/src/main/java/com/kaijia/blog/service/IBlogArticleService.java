@@ -1,6 +1,8 @@
 package com.kaijia.blog.service;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VArticle;
 import com.kaijia.blog.domain.BlogArticle;
 
 /**
@@ -26,7 +28,7 @@ public interface IBlogArticleService
      * @return 文章管理集合
      */
     public List<BlogArticle> selectBlogArticleList(BlogArticle blogArticle);
-
+    public List<VArticle> list4User(VArticle vArticle);
     /**
      * 新增文章管理
      * 

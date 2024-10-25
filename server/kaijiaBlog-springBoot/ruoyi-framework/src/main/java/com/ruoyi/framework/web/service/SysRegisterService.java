@@ -85,6 +85,9 @@ public class SysRegisterService
             else
             {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                final Long[] ROLE_ID = {2l};
+                SysUser currentUser = userService.selectUserByUserName(username);
+                userService.insertUserAuth(currentUser.getUserId(), ROLE_ID);
             }
         }
         return msg;

@@ -2,6 +2,9 @@ package com.kaijia.blog.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kaijia.blog.controller.vo.VArticle;
+import com.ruoyi.common.annotation.Anonymous;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +38,21 @@ public class BlogArticleController extends BaseController
     private IBlogArticleService blogArticleService;
 
     /**
-     * 查询文章管理列表
+     * 客户端查询文章
      */
-    @PreAuthorize("@ss.hasPermi('blog:article:list')")
+    @Anonymous
+    @GetMapping("getList4User")
+    public TableDataInfo list4user(VArticle vArticle) {
+        startPage();
+        List<VArticle> list = blogArticleService.list4User(vArticle);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询所有文章管理列表
+     */
+//    @PreAuthorize("@ss.hasPermi('blog:article:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BlogArticle blogArticle)
     {
@@ -62,7 +77,7 @@ public class BlogArticleController extends BaseController
     /**
      * 获取文章管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('blog:article:query')")
+    @Anonymous
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {

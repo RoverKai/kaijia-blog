@@ -1,6 +1,8 @@
 package com.kaijia.blog.mapper;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VArticle;
 import com.kaijia.blog.domain.BlogArticle;
 
 /**
@@ -9,7 +11,7 @@ import com.kaijia.blog.domain.BlogArticle;
  * @author ruoyi
  * @date 2024-10-21
  */
-public interface BlogArticleMapper 
+public interface BlogArticleMapper
 {
     /**
      * 查询文章管理
@@ -18,7 +20,7 @@ public interface BlogArticleMapper
      * @return 文章管理
      */
     public BlogArticle selectBlogArticleById(Long id);
-
+    public List<VArticle>  list4User(VArticle vArticle);
     /**
      * 查询文章管理列表
      * 

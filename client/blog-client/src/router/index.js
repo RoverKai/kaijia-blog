@@ -16,8 +16,9 @@ const routes = [
   },
   //文章详情页
   {
-    path: '/article',
-    component: article
+    path: '/article/:articleId',
+    component: article,
+    props: true
   },
   //login
   {

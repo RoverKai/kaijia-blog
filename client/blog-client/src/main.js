@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import createPersistedState from 'pinia-plugin-persistedstate'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import requestPlugin from './plugins/requestPlugin'
 import App from './App.vue'
 import router from './router/index'
 
@@ -14,4 +15,5 @@ createApp(App)
 .use(pinia)
 .use(router)
 .use(ElementPlus)
+.use(requestPlugin)
 .mount('#app')

@@ -1,14 +1,16 @@
 package com.kaijia.blog.controller.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class ArticleView {
+public class VArticle {
+    private Long id;
     private String title;
+    private String content;
     private Date createTime;
     private Long categoryId;
     private Integer viewCount;
+    private Integer likeCount;
 }

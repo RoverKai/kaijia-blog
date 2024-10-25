@@ -2,6 +2,8 @@ package com.kaijia.blog.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.Anonymous;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2024-10-22
  */
 @RestController
-@RequestMapping("/category/category")
+@RequestMapping("/blog/category")
 public class BlogCategoryController extends BaseController
 {
     @Autowired
@@ -37,7 +39,8 @@ public class BlogCategoryController extends BaseController
     /**
      * 查询文章分类管理列表
      */
-    @PreAuthorize("@ss.hasPermi('category:category:list')")
+//    @PreAuthorize("@ss.hasPermi('category:category:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BlogCategory blogCategory)
     {

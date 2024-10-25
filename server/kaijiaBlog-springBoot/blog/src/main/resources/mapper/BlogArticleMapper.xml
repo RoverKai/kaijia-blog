@@ -17,6 +17,15 @@
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
     </resultMap>
+    <resultMap id="VArticleResultMap" type="com.kaijia.blog.controller.vo.VArticle">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="createTime" column="create_time" />
+        <result property="categoryId" column="category_id" />
+        <result property="viewCount" column="view_count" />
+        <result property="likeCount" column="like_count" />
+    </resultMap>
 
     <sql id="selectBlogArticleVo">
         select
@@ -30,6 +39,23 @@
                 left join sys_user as b on a.author_id = b.user_id
                 left join blog_category as c on a.category_id = c.id
     </sql>
+    <select id="list4User" resultMap="VArticleResultMap">
+        select
+            a.id,
+            a.title,
+            a.content,
+            a.create_time,
+            a.category_id,
+            a.view_count,
+            count(b.user_id) like_count
+        from blog_article as a
+            left join blog_article_like b  on a.id = b.article_id
+        <where>
+            <if test="categoryId != null">and a.category_id = #{categoryId} </if>
+            <if test="content != null and content != ''">and a.title like concat('%',#{content},'%') </if>
+        </where>
+        group by a.id, a.title, a.create_time, a.category_id, a.view_count
+    </select>
 
     <select id="selectBlogArticleList" parameterType="BlogArticle" resultMap="BlogArticleResult">
         <include refid="selectBlogArticleVo" />

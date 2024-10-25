@@ -4,16 +4,13 @@
 
 <template>
   <div class="flex flex-row justify-around" id="footbar">
-    <div>
-      联系我：
-      <div>
-        219
-      </div>
+    <div class=" font-serif">
+      contact me: 2196140098@qq.com
     </div>
-    <div>
-      友链：
+    <div class=" font-serif">
+      link:
       <div>
-        asdfl
+        <link rel="stylesheet" href="https://cn.vuejs.org/">
       </div>
     </div>
   </div>
