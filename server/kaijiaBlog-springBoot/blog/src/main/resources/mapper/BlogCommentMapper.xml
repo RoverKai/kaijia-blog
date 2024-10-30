@@ -13,12 +13,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
     </resultMap>
 
-    <sql id="selectBlogCommentVo">
+    <resultMap id="VCommentResult" type="VComment" extends="BlogCommentResult">
+        <result property="userName" column="user_name" />
+    </resultMap>
+
+    <sql id="selectBlogComment">
         select id, article_id, user_id, content, parent_id, create_time from blog_comment
     </sql>
 
+    <sql id="selectVComment">
+        select a.id, a.article_id, a.user_id, a.content, a.parent_id, a.create_time, b.user_name from blog_comment as a
+            left join sys_user as b on a.user_id = b.user_id
+    </sql>
+
+    <select id="selectComment4Article" parameterType="VComment" resultMap="VCommentResult">
+        <include refid="selectVComment"/>
+        <where>
+            <if test="articleId != null"> and article_id = #{articleId}</if>
+        </where>
+    </select>
+
     <select id="selectBlogCommentList" parameterType="BlogComment" resultMap="BlogCommentResult">
-        <include refid="selectBlogCommentVo"/>
+        <include refid="selectBlogComment"/>
         <where>  
             <if test="articleId != null "> and article_id = #{articleId}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
@@ -29,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectBlogCommentById" parameterType="Long" resultMap="BlogCommentResult">
-        <include refid="selectBlogCommentVo"/>
+        <include refid="selectBlogComment"/>
         where id = #{id}
     </select>
 

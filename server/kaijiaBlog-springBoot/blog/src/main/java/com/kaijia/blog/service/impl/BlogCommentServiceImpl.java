@@ -1,6 +1,8 @@
 package com.kaijia.blog.service.impl;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VComment;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,14 @@ public class BlogCommentServiceImpl implements IBlogCommentService
     public List<BlogComment> selectBlogCommentList(BlogComment blogComment)
     {
         return blogCommentMapper.selectBlogCommentList(blogComment);
+    }
+
+    /**
+     * 用户查询评论
+     */
+    public List<VComment> selectComment4Article(VComment vComment)
+    {
+        return blogCommentMapper.selectComment4Article(vComment);
     }
 
     /**

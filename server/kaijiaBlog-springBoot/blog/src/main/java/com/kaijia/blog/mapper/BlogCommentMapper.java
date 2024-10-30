@@ -1,6 +1,9 @@
 package com.kaijia.blog.mapper;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VArticle;
+import com.kaijia.blog.controller.vo.VComment;
 import com.kaijia.blog.domain.BlogComment;
 
 /**
@@ -26,7 +29,9 @@ public interface BlogCommentMapper
      * @return 评论管理集合
      */
     public List<BlogComment> selectBlogCommentList(BlogComment blogComment);
+    public List<VComment> selectComment4Article(VComment vComment);
 
+    public List<VComment> selectComment4Article(VArticle vArticle);
     /**
      * 新增评论管理
      * 

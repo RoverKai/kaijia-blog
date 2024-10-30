@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "danmaku-vue": "^1.0.2",
     "element-plus": "^2.8.6",
     "md-editor-v3": "^4.21.1",
     "pinia": "^2.2.4",

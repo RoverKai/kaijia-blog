@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { useDialog, useMessage } from 'naive-ui';
-import { useRouter } from 'vue-router';
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: 'http://localhost:8080', // 后端地址
+  baseURL: 'http://192.168.1.193:80/prod-api', // 后端地址
   timeout: 10000, // 超时时间
 });
 
@@ -29,9 +27,9 @@ service.interceptors.response.use(
     ) {
       return res.data;
     }
-    console.log(res)
     if (code === 401) {
       return Promise.reject('无效的会话，请重新登录');
+
     }else if (code !== 200) {
       return Promise.reject(msg);
     } else {

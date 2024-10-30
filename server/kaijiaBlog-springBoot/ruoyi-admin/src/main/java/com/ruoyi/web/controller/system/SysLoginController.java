@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,9 @@ public class SysLoginController
     @Autowired
     private SysPermissionService permissionService;
 
+    @Autowired
+    private ISysUserService sysUserService;
+
     /**
      * 登录方法
      * 
@@ -47,7 +52,10 @@ public class SysLoginController
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid());
+        SysUser sysUser = sysUserService.selectUserByUserName(loginBody.getUsername());
+        Long userId = sysUser.getUserId();
         ajax.put(Constants.TOKEN, token);
+        ajax.put(Constants.JWT_USERID, userId);
         return ajax;
     }
 

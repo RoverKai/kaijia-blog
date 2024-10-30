@@ -3,6 +3,7 @@ import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(null);
+  const id = ref(null)
 
   const setToken = (newToken) => {
     token.value = newToken;
@@ -12,7 +13,15 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null;
   };
 
-  return { token, setToken, clearToken };
+  const setId = (newId) => {
+    id.value = newId;
+  };
+
+  const clearId = () => {
+    id.value = null;
+  };
+
+  return { token, id, setToken, clearToken, setId, clearId };
 },{
   persist: true
 });

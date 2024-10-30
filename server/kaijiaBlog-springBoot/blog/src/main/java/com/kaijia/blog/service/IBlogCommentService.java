@@ -1,6 +1,8 @@
 package com.kaijia.blog.service;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VComment;
 import com.kaijia.blog.domain.BlogComment;
 
 /**
@@ -26,7 +28,7 @@ public interface IBlogCommentService
      * @return 评论管理集合
      */
     public List<BlogComment> selectBlogCommentList(BlogComment blogComment);
-
+    public List<VComment> selectComment4Article(VComment vComment);
     /**
      * 新增评论管理
      * 

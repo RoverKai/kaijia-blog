@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaijia.blog.mapper.BlogDanmuMapper">
+
+    <resultMap id="BlogDanmuResult" type="BlogDanmu">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="content" column="content" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="selectAllFromBlogComment">
+        select * from blog_danmu
+    </sql>
+
+    <select id="getDanmuList" resultMap="BlogDanmuResult" parameterType="BlogDanmu">
+        <include refid="selectAllFromBlogComment"/>
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+            <if test="content != null and content != ''">and content like concat('%', #{content}, '%')</if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="insertDanmu" parameterType="BlogDanmu" useGeneratedKeys="true" keyProperty="id">
+        insert into blog_danmu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+</mapper>

@@ -1,8 +1,5 @@
-import { createMemoryHistory, createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import home from "../pages/home.vue";
-import article from "../pages/article.vue";
-import login from "../pages/login.vue";
-import regiter from "../pages/register.vue";
 const routes = [
   //重定向
   { 
@@ -17,23 +14,18 @@ const routes = [
   //文章详情页
   {
     path: '/article/:articleId',
-    component: article,
+    component: import("../pages/article.vue"),
     props: true
   },
   //login
   {
     path: '/login',
-    component: login
+    component: import("../pages/login.vue")
   },
   //log up
   {
     path: '/register',
-    component: regiter
-  },
-  // 404 页面
-  {
-    path: '/:pathMatch(.*)*',
-    component: () => import('../pages/NotFound.vue') // 动态导入404页面
+    component: import("../pages/register.vue")
   }
 ]
 

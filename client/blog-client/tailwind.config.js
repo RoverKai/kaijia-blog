@@ -9,5 +9,6 @@ export default {
   },
   plugins: [],
   //暗色主题
-  darkMode: 'class'
+  darkMode: 'class',
+  important: true
 }

@@ -39,6 +39,7 @@
                 left join sys_user as b on a.author_id = b.user_id
                 left join blog_category as c on a.category_id = c.id
     </sql>
+<!-- 只查询状态为published的文章-->
     <select id="list4User" resultMap="VArticleResultMap">
         select
             a.id,
@@ -53,6 +54,7 @@
         <where>
             <if test="categoryId != null">and a.category_id = #{categoryId} </if>
             <if test="content != null and content != ''">and a.title like concat('%',#{content},'%') </if>
+            and a.status = 'published'
         </where>
         group by a.id, a.title, a.create_time, a.category_id, a.view_count
     </select>

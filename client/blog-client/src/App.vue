@@ -5,13 +5,16 @@ import { NMessageProvider,NDialogProvider } from 'naive-ui';
 </script>
 
 <template>
+  <!-- 弹窗和消息组件 -->
   <n-dialog-provider>
     <n-message-provider>
+      <!-- 主容器 -->
       <div id="main" class="flex flex-col items-center min-h-screen min-w-96 *:w-full">
         <div class="">
           <top-bar></top-bar>
         </div>
-        <div class=" flex justify-center items-center grow w-2/3">
+        <!-- 内容 -->
+        <div class="">
           <router-view></router-view>
         </div>
         <div class="">

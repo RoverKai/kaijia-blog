@@ -2,6 +2,9 @@ package com.kaijia.blog.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kaijia.blog.controller.vo.VComment;
+import com.ruoyi.common.annotation.Anonymous;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +40,22 @@ public class BlogCommentController extends BaseController
     /**
      * 查询评论管理列表
      */
-    @PreAuthorize("@ss.hasPermi('blog:comment:list')")
+//    @PreAuthorize("@ss.hasPermi('blog:comment:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BlogComment blogComment)
     {
         startPage();
         List<BlogComment> list = blogCommentService.selectBlogCommentList(blogComment);
+        return getDataTable(list);
+    }
+
+    @Anonymous
+    @GetMapping("getCommentList")
+    public TableDataInfo getCommentList4Article(VComment vComment)
+    {
+        startPage();
+        List<VComment> list = blogCommentService.selectComment4Article(vComment);
         return getDataTable(list);
     }
 
@@ -72,7 +85,7 @@ public class BlogCommentController extends BaseController
     /**
      * 新增评论管理
      */
-    @PreAuthorize("@ss.hasPermi('blog:comment:add')")
+    @PreAuthorize("@ss.hasRole('user')")
     @Log(title = "评论管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BlogComment blogComment)
