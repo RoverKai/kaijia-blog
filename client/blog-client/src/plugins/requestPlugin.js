@@ -2,13 +2,25 @@ import axios from 'axios';
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: 'http://192.168.1.193:80/prod-api', // 后端地址
+  baseURL: 'http://8.210.105.98:80/prod-api',
+  // baseURL: 'http://192.168.1.193:8080',
+  // baseURL: 'http://192.168.43.84:8080',
+  // baseURL: 'http://localhost:8080',
   timeout: 10000, // 超时时间
 });
+
+// let lastRequstTime = 0;
+// const requestInterval =1000;
 
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    // 限制请求频率
+    // const currentTime = Date.now();
+    // if (currentTime - lastRequstTime < requestInterval) {
+    //   return Promise.reject(new Error("请求过于频繁"));
+    // }
+    // lastRequstTime = currentTime;
     return config;
   },
   (error) => {
@@ -37,6 +49,7 @@ service.interceptors.response.use(
     }
   },
   (error) => {
+    console.log(error)
     let message = error.message;
     if (message === 'Network Error') message = '后端接口连接异常';
     else if (message.includes('timeout')) message = '系统接口请求超时';

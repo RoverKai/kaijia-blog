@@ -2,23 +2,23 @@
   <danmaku :danmus="danmuList" class="absolute w-full h-screen top-16" />
   <div class="flex justify-center flex-wrap items-center h-screen md:min-h-screen">
     <div class="w-2/3 flex flex-col items-center">
-      <n-input-group id="searchBar" class=" mb-12 *:rounded-md min-w-96 w-2/3 ">
-        <n-dropdown trigger="hover" :options="categoryList" @select="handleCategory">
-          <n-button>{{ categoryBtnName }}</n-button>
+      <n-input-group id="searchBar" class="mb-12 *:rounded-md min-w-96 w-2/3">
+        <n-dropdown trigger="hover" class="dark:bg-darkColor4" :options="categoryList" @select="handleCategory">
+          <n-button :theme="darkTheme" class="dark:text-darkColor4">{{ categoryBtnName }}</n-button>
         </n-dropdown>
-        <n-input class="text-center" @keyup.enter="handleSearch" placeholder="比旁边的按钮更直接"
+        <n-input class="text-center dark:text-darkColor4" :theme="darkTheme" @keyup.enter="handleSearch" placeholder="比旁边的按钮更直接"
           v-model:value="queryParams.content" />
-        <n-button @click="handleSearch">搜索</n-button>
-        <n-button @click="sendDanmu">发送弹幕</n-button>
+        <n-button @click="handleSearch" :theme="darkTheme" class="dark:text-darkColor4">搜索</n-button>
+        <n-button @click="sendDanmu" :theme="darkTheme" class="dark:text-darkColor4">发送弹幕</n-button>
       </n-input-group>
-      <div class="h-48 w-screen md:w-2/3">
-        <n-infinite-scroll :distance="2" @load="handleLoad" trigger="hover" class="">
+      <div class="h-52 md:h-48 w-screen md:w-2/3">
+        <n-infinite-scroll :distance="2" @load="handleLoad">
           <div @click="toDetail(article.id)" v-for="(article, index) in articles" :key="index" id="article"
-            class=" cursor-pointer rounded h-8 w-full shadow-xl mb-4 md:mb-3 last:mb-0">
+            class="cursor-pointer rounded h-8 w-full shadow-xl mb-4 md:mb-3 last:mb-0 dark:bg-darkColor2">
             <div class="title rounded text-center flex flex-col">
-              <div class="flex items-center justify-between *:flex *:items-center *:mr-2 *:*:mr-1">
-                <div class="font-bold basis-64">《{{ article.title }}》 </div>
-                <div>
+              <div class="flex dark:bg-darkColor2 items-center justify-between *:flex *:items-center *:mr-2 *:*:mr-1">
+                <div class="font-bold basis-64 dark:text-darkColor4">《{{ article.title }}》</div>
+                <div class="dark:text-darkColor4">
                   <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 576 512">
                     <path
@@ -27,7 +27,7 @@
                   </svg>
                   <div>{{ article.viewCount }}</div>
                 </div>
-                <div>
+                <div class="dark:text-darkColor4">
                   <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 12 12">
                     <g fill="none">
@@ -38,7 +38,7 @@
                   </svg>
                   <div>{{ article.likeCount }}</div>
                 </div>
-                <div>
+                <div class="dark:text-darkColor4">
                   <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 24 24">
                     <path opacity=".3" d="M5 8h14V6H5z" fill="currentColor"></path>
@@ -57,10 +57,11 @@
   </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted, getCurrentInstance, watch } from 'vue';
+import { ref, onMounted, getCurrentInstance, watch, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { NInfiniteScroll, NInput, NInputGroup, NButton, NDropdown, useMessage } from 'naive-ui';
+import { NInfiniteScroll, NInput, NInputGroup, NButton, NDropdown, useMessage, darkTheme } from 'naive-ui';
 import Danmaku from 'danmaku-vue'
 import { useAuthStore } from '../stores/token';
 const articles = ref([])
@@ -68,13 +69,27 @@ const proxy = getCurrentInstance().proxy;
 const danmuList = ref(['666'])
 const danmuContent = ref('')
 const userInfo = useAuthStore();
+// const {isMobile} = defineProps({
+//   isMobile
+// })
 
 // 初始化
 onMounted(() => {
   handleLoad()
   listCategory()
   getDanmuList()
+  // window.addEventListener('resize', handleResize);
 })
+
+// onUnmounted(() => {
+//   window.removeEventListener('resize', handleResize)
+// })
+
+// 适配移动设备
+// const isMobile = ref(false)
+// const handleResize = () => {
+//   isMobile.value = window.innerWidth < 768
+// }
 
 // 获取弹幕列表
 const getDanmuList = () => {
@@ -151,7 +166,7 @@ const sendDanmu = () => {
     proxy.$axios.post('/blog/danmu', {
       userId: userInfo.id,
       content: danmuContent.value
-    },{
+    }, {
       headers: {
         Authorization: `Bearer ${userInfo.token}`
       }

@@ -13,4 +13,5 @@ public class VArticle {
     private Long categoryId;
     private Integer viewCount;
     private Integer likeCount;
+    private Boolean isLiked;
 }

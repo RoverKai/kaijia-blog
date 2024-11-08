@@ -2,50 +2,24 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="文章标题" prop="title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="请输入文章标题"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.title" placeholder="请输入文章标题" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="作者" prop="authorNickName">
-        <el-input
-          v-model="queryParams.authorNickName"
-          placeholder="请输入作者"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.authorNickName" placeholder="请输入作者" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="分类" prop="categoryName">
-        <el-input
-          v-model="queryParams.categoryName"
-          placeholder="请输入分类"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.categoryName" placeholder="请输入分类" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="浏览次数" prop="viewCount">
-        <el-input
-          v-model="queryParams.viewCount"
-          placeholder="请输入浏览次数"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.viewCount" placeholder="请输入浏览次数" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
-        <el-date-picker clearable
-          v-model="queryParams.createTime"
-          type="date"
-          value-format="YYYY-MM-DD"
+        <el-date-picker clearable v-model="queryParams.createTime" type="date" value-format="YYYY-MM-DD"
           placeholder="请选择创建时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="更新时间" prop="updateTime">
-        <el-date-picker clearable
-          v-model="queryParams.updateTime"
-          type="date"
-          value-format="YYYY-MM-DD"
+        <el-date-picker clearable v-model="queryParams.updateTime" type="date" value-format="YYYY-MM-DD"
           placeholder="请选择更新时间">
         </el-date-picker>
       </el-form-item>
@@ -57,33 +31,15 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['blog:article:add']"
-        >发布</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['blog:article:add']">发布</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['blog:article:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['blog:article:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['blog:article:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['blog:article:remove']">删除</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
         <el-button
@@ -104,23 +60,20 @@
       <!-- <el-table-column label="文章内容" align="center" prop="content" /> -->
       <el-table-column label="作者" align="center" prop="authorNickName" />
       <el-table-column label="分类" align="center" prop="categoryName" />
-      <el-table-column label="文章状态" align="center" prop="status" />
+      <el-table-column label="文章状态" align="center" prop="status" :formatter="statusFormatter" />
       <el-table-column label="浏览次数" align="center" prop="viewCount" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['blog:article:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['blog:article:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['blog:article:edit']">修改</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['blog:article:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改文章管理对话框 -->
     <el-dialog :title="title" v-model="open" width="1700px" append-to-body>
@@ -134,19 +87,23 @@
         <el-form-item>
           <MdEditor v-model="form.content" />
         </el-form-item>
-        <el-form-item label="作者ID" prop="authorId">
+        <!-- <el-form-item label="作者ID" prop="authorId">
           <el-input v-model="form.authorId" placeholder="请输入作者ID" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="分类ID" prop="categoryId">
-          <el-input v-model="form.categoryId" placeholder="请输入分类ID" />
+          <!-- <el-input v-model="form.categoryId" placeholder="请输入分类ID" /> -->
+          <el-select v-model="form.categoryId" placeholder="请选择文章分类">
+            <el-option v-for="category in categoryDict" :key="category.id" :value="category.dictValue" :label="category.dictLabel"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="浏览次数" prop="viewCount">
+        <!-- <el-form-item label="浏览次数" prop="viewCount">
           <el-input v-model="form.viewCount" placeholder="请输入浏览次数" />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button type="warning" @click="submitForm('published')">发 布</el-button>
+          <el-button type="primary" @click="submitForm('draft')">保存草稿</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
       </template>
@@ -156,9 +113,9 @@
 
 <script setup name="Article">
 import { listArticle, getArticle, delArticle, addArticle, updateArticle } from "@/api/blog/article";
+import { listCategory } from "../../../api/blog/category";
 import { MdEditor } from "md-editor-v3";
 import 'md-editor-v3/lib/style.css'
-
 const { proxy } = getCurrentInstance();
 const articleList = ref([]);
 const open = ref(false);
@@ -306,10 +263,13 @@ function handleUpdate(row) {
   });
 }
 
+
 /** 提交按钮 */
-function submitForm() {
+function submitForm(submitType) {
   proxy.$refs["articleRef"].validate(valid => {
     if (valid) {
+      form.value.status = submitType;
+      form.value.authorId = 3;
       if (form.value.id != null) {
         updateArticle(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
@@ -330,12 +290,12 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除文章管理编号为"' + _ids + '"的数据项？').then(function() {
+  proxy.$modal.confirm('是否确认删除文章管理编号为"' + _ids + '"的数据项？').then(function () {
     return delArticle(_ids);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+  }).catch(() => { });
 }
 
 /** 导出按钮操作 */
@@ -344,6 +304,19 @@ function handleExport() {
     ...queryParams.value
   }, `article_${new Date().getTime()}.xlsx`)
 }
+
+const statusFormatter = row => {
+  return row.status === "published" ? '已发布' : '草稿'
+}
+
+const categoryDict = ref([])
+listCategory().then(res => {
+  console.log(res)
+  categoryDict.value = res.rows.map(category => {
+    return {dictValue: category.id, dictLabel: category.name}
+  })
+  console.log(categoryDict.value)
+})
 
 getList();
 </script>

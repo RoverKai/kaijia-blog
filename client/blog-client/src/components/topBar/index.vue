@@ -2,8 +2,10 @@
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/token';
+import { useThemeStore } from '../../stores/theme'
 import { useMessage } from 'naive-ui';
 
+const themeStore = useThemeStore();
 const authStore = useAuthStore();
 const router = useRouter();
 const isLogin = ref(false)
@@ -20,26 +22,32 @@ watch(() => authStore.token, (newStatus) => {
   } else {
     isLogin.value = false
   }
-}, {
-  immediate: true
 })
+
+// 切换暗色主题 
+function toggleDarkMode() {
+  themeStore.toggleTheme();
+}
 </script>
 
 <template>
-  <div class="h-16 fixed w-full flex items-center" id="headContainner">
-    <div class="w-28 font-serif md:ml-8  text-center">
+  <div class="h-16 w-full flex items-center" id="headContainner">
+    <div class="w-28 font-serif md:ml-8 text-center cursor-pointer dark:text-darkColor4" @click="toggleDarkMode">
       dark theme
     </div>
-    <router-link to="/home" class=" font-serif font-semibold flex justify-center grow">kaijia's blog</router-link>
+    <router-link to="/home" class="font-serif font-semibold flex justify-center grow dark:text-darkColor4">xiaoYi Blog</router-link>
     <div v-if="isLogin">
-      <button type="button" class="  font-serif w-28 md:mr-8" @click="handleLogout">logout</button>
+      <button type="button" class="font-serif w-28 md:mr-8 dark:text-darkColor4" @click="handleLogout">logout</button>
     </div>
     <div v-else class="flex basis-28 md:justify-between md:mr-8">
-      <router-link to="/login" id="loginBtn" class="text-center w-12 font-serif">login</router-link>
-      <router-link to="/register" id="registerBtn" class="text-center w-12 font-serif">register</router-link>
+      <router-link to="/login" id="loginBtn" class="text-center w-12 font-serif dark:text-darkColor4">login</router-link>
+      <router-link to="/register" id="registerBtn" class="text-center w-12 font-serif dark:text-darkColor4">register</router-link>
     </div>
   </div>
-  <hr>
+  <hr class="dark:border-darkColor4">
 </template>
 
-<style></style>
+
+<style>
+
+</style>

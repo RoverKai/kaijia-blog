@@ -19,7 +19,9 @@ public interface IBlogArticleService
      * @param id 文章管理主键
      * @return 文章管理
      */
-    public BlogArticle selectBlogArticleById(Long id);
+    public BlogArticle selectBlogArticleById(Long id, Long userId);
+    public BlogArticle updateViewCount(BlogArticle blogArticle);
+    public boolean hasUserLikedArticle(Long articleId, Long userId);
 
     /**
      * 查询文章管理列表

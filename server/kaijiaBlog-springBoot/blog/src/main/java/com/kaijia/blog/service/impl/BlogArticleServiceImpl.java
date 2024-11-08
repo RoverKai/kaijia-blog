@@ -3,7 +3,10 @@ package com.kaijia.blog.service.impl;
 import java.util.List;
 
 import com.kaijia.blog.controller.vo.VArticle;
+import com.kaijia.blog.domain.BlogArticleLike;
+import com.kaijia.blog.mapper.BlogArticleLikeMapper;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kaijia.blog.mapper.BlogArticleMapper;
@@ -21,6 +24,8 @@ public class BlogArticleServiceImpl implements IBlogArticleService
 {
     @Autowired
     private BlogArticleMapper blogArticleMapper;
+    @Autowired
+    private BlogArticleLikeMapper blogArticleLikeMapper;
 
     /**
      * 查询文章管理
@@ -29,14 +34,26 @@ public class BlogArticleServiceImpl implements IBlogArticleService
      * @return 文章管理
      */
     @Override
-    public BlogArticle selectBlogArticleById(Long id)
+    public BlogArticle selectBlogArticleById(Long id, Long userId)
     {
         BlogArticle blogArticle = blogArticleMapper.selectBlogArticleById(id);
+
+
+        return blogArticle;
+    }
+    @Override
+    public BlogArticle updateViewCount(BlogArticle blogArticle) {
         Long viewCount = blogArticle.getViewCount();
         blogArticle.setViewCount(viewCount+1);
         blogArticleMapper.updateBlogArticle(blogArticle);
         return blogArticle;
     }
+    @Override
+    public boolean hasUserLikedArticle(Long articleId, Long userId) {
+        List<BlogArticleLike> blogArticleLikes = blogArticleLikeMapper.selectBlogArticleLikeByArticleId(articleId);
+        return blogArticleLikes.stream().anyMatch(like -> like.getUserId().equals(userId));
+    }
+
 
     @Override
     public List<VArticle> list4User(VArticle vArticle) {

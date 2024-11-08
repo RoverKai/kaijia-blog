@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询文章分类管理列表
 export function listCategory(query) {
   return request({
-    url: '/category/category/list',
+    url: '/blog/category/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listCategory(query) {
 // 查询文章分类管理详细
 export function getCategory(id) {
   return request({
-    url: '/category/category/' + id,
+    url: '/blog/category/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getCategory(id) {
 // 新增文章分类管理
 export function addCategory(data) {
   return request({
-    url: '/category/category',
+    url: '/blog/category',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addCategory(data) {
 // 修改文章分类管理
 export function updateCategory(data) {
   return request({
-    url: '/category/category',
+    url: '/blog/category',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateCategory(data) {
 // 删除文章分类管理
 export function delCategory(id) {
   return request({
-    url: '/category/category/' + id,
+    url: '/blog/category/' + id,
     method: 'delete'
   })
 }

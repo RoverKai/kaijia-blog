@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center grow min-h-screen">
-    <div id="register" class=" flex grow justify-center items-center w-96 h-96 shadow-2xl -rotate-3 -skew-x-3">
-      <el-form @keyup.enter="handleRegistry" ref="formRef" :model="form" :rules="rules" label-width="auto" class="w-64 flex flex-col items-center rotate-3 skew-x-3">
+    <div id="register" class=" flex rounded-lg justify-center items-center w-96 h-96 dark:border border-gray-500 shadow-2x dark:shadow-soft-white">
+      <el-form @keyup.enter="handleRegistry" ref="formRef" :model="form" :rules="rules" label-width="auto" class="w-64 flex flex-col items-center">
         <el-form-item label="账号" prop="username">
           <el-input v-model="form.username"></el-input>
         </el-form-item>
@@ -25,7 +25,6 @@
 
 <script setup>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useDialog,useMessage } from 'naive-ui';
 
@@ -95,5 +94,4 @@ const handleRegistry = () => {
 #register {
   background-color: #cdedde3d;
 }
-
 </style>

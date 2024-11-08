@@ -1,6 +1,8 @@
 package com.kaijia.blog.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ public class BlogArticleLikeController extends BaseController
     /**
      * 获取点赞管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('blog:articleLike:query')")
+    @PreAuthorize("@ss.hasRole('user')")
     @GetMapping(value = "/{articleId}")
     public AjaxResult getInfo(@PathVariable("articleId") Long articleId)
     {
@@ -72,7 +74,7 @@ public class BlogArticleLikeController extends BaseController
     /**
      * 新增点赞管理
      */
-    @PreAuthorize("@ss.hasPermi('blog:articleLike:add')")
+    @PreAuthorize("@ss.hasRole('user')")
     @Log(title = "点赞管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BlogArticleLike blogArticleLike)
@@ -100,5 +102,20 @@ public class BlogArticleLikeController extends BaseController
     public AjaxResult remove(@PathVariable Long[] articleIds)
     {
         return toAjax(blogArticleLikeService.deleteBlogArticleLikeByArticleIds(articleIds));
+    }
+
+    /**
+     * 用户取消点赞操作
+     * @param articleId
+     * @param userId
+     * @return
+     */
+    @PreAuthorize("@ss.hasRole('user')")
+    @DeleteMapping("/{articleId}/{userId}")
+    public AjaxResult disLike(@PathVariable Long articleId, @PathVariable Long userId) {
+        HashMap<String, Long> targetLike = new HashMap<>();
+        targetLike.put("articleId", articleId);
+        targetLike.put("userId", userId);
+        return toAjax(blogArticleLikeService.deleteBlogArticleLikeByArticleIdAndUserId(targetLike));
     }
 }

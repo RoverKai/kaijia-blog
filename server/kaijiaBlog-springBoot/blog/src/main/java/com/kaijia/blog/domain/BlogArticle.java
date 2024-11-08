@@ -46,6 +46,8 @@ public class BlogArticle extends BaseEntity
     @Excel(name = "浏览次数")
     private Long viewCount;
 
+    private Boolean isLike;
+
     public void setId(Long id) 
     {
         this.id = id;

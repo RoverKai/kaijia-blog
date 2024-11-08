@@ -51,7 +51,6 @@ public class BlogArticleController extends BaseController
     /**
      * 查询所有文章管理列表
      */
-//    @PreAuthorize("@ss.hasPermi('blog:article:list')")
     @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(BlogArticle blogArticle)
@@ -78,10 +77,15 @@ public class BlogArticleController extends BaseController
      * 获取文章管理详细信息
      */
     @Anonymous
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    @GetMapping(value = "/{id}/{userId}")
+    public AjaxResult getInfo(@PathVariable("id") Long id, @PathVariable Long userId)
     {
-        return success(blogArticleService.selectBlogArticleById(id));
+        BlogArticle blogArticle = blogArticleService.selectBlogArticleById(id, userId);
+
+        BlogArticle article = blogArticleService.updateViewCount(blogArticle);
+
+        article.setIsLike(blogArticleService.hasUserLikedArticle(article.getId(), userId));
+        return success(article);
     }
 
     /**

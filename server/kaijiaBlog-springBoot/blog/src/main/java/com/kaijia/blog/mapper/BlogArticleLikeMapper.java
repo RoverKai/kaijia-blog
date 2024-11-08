@@ -1,6 +1,8 @@
 package com.kaijia.blog.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.kaijia.blog.domain.BlogArticleLike;
 
 /**
@@ -17,7 +19,7 @@ public interface BlogArticleLikeMapper
      * @param articleId 点赞管理主键
      * @return 点赞管理
      */
-    public BlogArticleLike selectBlogArticleLikeByArticleId(Long articleId);
+    public List<BlogArticleLike> selectBlogArticleLikeByArticleId(Long articleId);
 
     /**
      * 查询点赞管理列表
@@ -58,4 +60,6 @@ public interface BlogArticleLikeMapper
      * @return 结果
      */
     public int deleteBlogArticleLikeByArticleIds(Long[] articleIds);
+
+    public int deleteBlogArticleLikeByArticleIdAndUserId(Map<String, Long> targetLike);
 }

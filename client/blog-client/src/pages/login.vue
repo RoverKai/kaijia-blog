@@ -1,8 +1,8 @@
 <template>
   <div class="flex justify-center items-center grow min-h-screen">
-    <div id="login" class="flex grow justify-center items-center w-96 h-96 shadow-2xl -rotate-3 -skew-x-3">
+    <div id="login" class="flex rounded-lg justify-center items-center w-96 h-96 dark:border border-gray-500 shadow-2x dark:shadow-soft-white">
       <el-form ref="formRef" @keyup.enter="submit" :model="form" :rules="rules" label-width="auto"
-      class="w-64 flex flex-col rotate-3 skew-x-3">
+      class="w-64 flex flex-col">
       <el-form-item label="账号" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>

@@ -61,4 +61,8 @@
             #{articleId}
         </foreach>
     </delete>
+
+    <delete id="deleteBlogArticleLikeByArticleIdAndUserId" parameterType="map">
+            delete from blog_article_like where article_id = #{articleId} and user_id = #{userId}
+    </delete>
 </mapper>
