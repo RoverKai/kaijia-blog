@@ -71,7 +71,7 @@
 import { MdPreview, MdCatalog } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
 import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue';
-import { NInput, NButton, NInputGroup, useMessage, darkTheme } from 'naive-ui';
+import { NInput, NButton, NInputGroup, useMessage } from 'naive-ui';
 import { useAuthStore } from '../stores/token';
 
 const scrollElement = document.documentElement
@@ -93,24 +93,28 @@ const article = ref({
   title: '',
   isLike: false,
 })
-const app = getCurrentInstance().proxy
+const app = getCurrentInstance()?.proxy
 const messager = useMessage();
+
 //加载文章
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  init()
+})
+const isMobile = ref(false)
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768
+}
+
+function init() {
   const userId = userInfo.id || 0
-  app.$axios.get(`/blog/article/${props.articleId}/${userId}`).then(res => {
+  app?.$axios.get(`/blog/article/${props.articleId}/${userId}`).then(res => {
     article.value = res.data;
     getCommentList();
     // getArticleLike();
   }).catch(msg => {
     messager.error(msg)
   })
-  app.$axios.get
-})
-const isMobile = ref(false)
-const handleResize = () => {
-  isMobile.value = window.innerWidth < 768
 }
 
 onUnmounted(() => {
@@ -194,7 +198,7 @@ const handleLikeClick = () => {
 const inputRef = ref(null)
 
 const toComment = () => {
-  if (inputRef.value?.$el) {
+  if (inputRef.value.$el) {
     inputRef.value.$el.scrollIntoView({ behavior: 'smooth' })
     setTimeout(() => {
       inputRef.value.focus()
@@ -209,6 +213,11 @@ onUnmounted(() => {
 const toTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+import { watch } from 'vue';
+watch(() => userInfo.token, () => {
+  init()
+})
 </script>
 
 <style>

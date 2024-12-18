@@ -1,18 +1,18 @@
 <template>
-  <danmaku :danmus="danmuList" class="absolute w-full h-screen top-16" />
-  <div class="flex justify-center flex-wrap items-center h-screen md:min-h-screen">
+  <div class="flex flex-col justify-center items-center">
+    <danmaku :danmus="danmuList" style="width: 100%; height: 150px;" />
     <div class="w-2/3 flex flex-col items-center">
       <n-input-group id="searchBar" class="mb-12 *:rounded-md min-w-96 w-2/3">
         <n-dropdown trigger="hover" class="dark:bg-darkColor4" :options="categoryList" @select="handleCategory">
           <n-button :theme="darkTheme" class="dark:text-darkColor4">{{ categoryBtnName }}</n-button>
         </n-dropdown>
-        <n-input class="text-center dark:text-darkColor4" :theme="darkTheme" @keyup.enter="handleSearch" placeholder="比旁边的按钮更直接"
-          v-model:value="queryParams.content" />
+        <n-input class="text-center dark:text-darkColor4" :theme="darkTheme" @keyup.enter="handleSearch"
+          placeholder="比旁边的按钮更直接" v-model:value="queryParams.content" />
         <n-button @click="handleSearch" :theme="darkTheme" class="dark:text-darkColor4">搜索</n-button>
         <n-button @click="sendDanmu" :theme="darkTheme" class="dark:text-darkColor4">发送弹幕</n-button>
       </n-input-group>
-      <div class="h-52 md:h-48 w-screen md:w-2/3">
-        <n-infinite-scroll :distance="2" @load="handleLoad">
+      <div class="h-52 md:h-48 min-w-96 md:w-2/3">
+        <n-infinite-scroll :distance="40" @load="handleLoad">
           <div @click="toDetail(article.id)" v-for="(article, index) in articles" :key="index" id="article"
             class="cursor-pointer rounded h-8 w-full shadow-xl mb-4 md:mb-3 last:mb-0 dark:bg-darkColor2">
             <div class="title rounded text-center flex flex-col">
@@ -150,7 +150,7 @@ const messager = useMessage()
 const handleLoad = () => {
   proxy.$axios.get('/blog/article/getList4User', { params: queryParams.value }).then(res => {
     articles.value = res.rows
-    queryParams.value.pageSize++;
+    queryParams.value.pageSize += 3;
   }).catch(err => messager.error(err))
 }
 

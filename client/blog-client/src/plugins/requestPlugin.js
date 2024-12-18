@@ -1,10 +1,13 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/token';
+// 调用pinia存储token
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: 'http://8.210.105.98:80/prod-api',
+  // baseURL: 'http://8.210.105.98:80/prod-api',
   // baseURL: 'http://192.168.1.193:8080',
   // baseURL: 'http://192.168.43.84:8080',
+  baseURL: 'http://192.168.1.192:8080',
   // baseURL: 'http://localhost:8080',
   timeout: 10000, // 超时时间
 });
@@ -15,6 +18,8 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    // authStore.token
+
     // 限制请求频率
     // const currentTime = Date.now();
     // if (currentTime - lastRequstTime < requestInterval) {
@@ -31,6 +36,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (res) => {
+    const authStore = useAuthStore()
     const code = res.data.code || 200;
     const msg = res.data.msg
     if (
@@ -40,9 +46,9 @@ service.interceptors.response.use(
       return res.data;
     }
     if (code === 401) {
+      authStore.clearToken()
       return Promise.reject('无效的会话，请重新登录');
-
-    }else if (code !== 200) {
+    } else if (code !== 200) {
       return Promise.reject(msg);
     } else {
       return res.data;

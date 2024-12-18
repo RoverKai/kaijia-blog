@@ -15,10 +15,10 @@ import { NMessageProvider, NDialogProvider, NConfigProvider } from 'naive-ui';
             <top-bar></top-bar>
           </div>
           <!-- 内容 -->
-          <div class="">
+          <div class="grow">            
             <router-view></router-view>
           </div>
-          <div class="">
+          <div ref="abc" class="">
             <foot-bar></foot-bar>
           </div>
         </div>

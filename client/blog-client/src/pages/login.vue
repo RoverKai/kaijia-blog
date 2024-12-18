@@ -1,24 +1,25 @@
 <template>
-  <div class="flex justify-center items-center grow min-h-screen">
-    <div id="login" class="flex rounded-lg justify-center items-center w-96 h-96 dark:border border-gray-500 shadow-2x dark:shadow-soft-white">
+  <div class="flex justify-center items-center mt-16">
+    <div id="login"
+      class="flex rounded-lg justify-center items-center w-96 h-96 border-gray-500 shadow-2x">
       <el-form ref="formRef" @keyup.enter="submit" :model="form" :rules="rules" label-width="auto"
-      class="w-64 flex flex-col">
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="form.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
-      </el-form-item>
-      <div class="flex">
-        <el-form-item label="验证码" prop="code">
-          <el-input v-model="form.code" />
+        class="w-64 flex flex-col">
+        <el-form-item label="账号" prop="username">
+          <el-input v-model="form.username"></el-input>
         </el-form-item>
-        <img alt="" id="captchaImage" @click="refreshImage" class="h-8 w-32">
-      </div>
-      <button type="button" class="translate-y-8 rounded-lg shadow-md hover:shadow-inner" @click="submit">登录</button>
-    </el-form>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="form.password"></el-input>
+        </el-form-item>
+        <div class="flex">
+          <el-form-item label="验证码" prop="code">
+            <el-input v-model="form.code" />
+          </el-form-item>
+          <img alt="" id="captchaImage" @click="refreshImage" class="h-8 w-32">
+        </div>
+        <button type="button" class="translate-y-8 rounded-lg shadow-md hover:shadow-inner" @click="submit">登录</button>
+      </el-form>
+    </div>
   </div>
-</div>
 </template>
 
 <script setup>
@@ -66,13 +67,15 @@ const submit = () => {
   formRef.value.validate(validate => {
     if (validate) {
       app.$axios.post('/login', form).then(res => {
-        console.log(res)
         messager.success('登录成功')
         userInfo.setId(res.userid)
         userInfo.setToken(res.token)
-        console.log(userInfo.token,userInfo.id)
         router.push("/home")
-      }).catch(err => messager.error(err))
+      }).catch(err => {
+        messager.error(err)
+        form.code = null
+        refreshImage()
+      })
     }
   })
 }

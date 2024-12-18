@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center items-center grow min-h-screen">
-    <div id="register" class=" flex rounded-lg justify-center items-center w-96 h-96 dark:border border-gray-500 shadow-2x dark:shadow-soft-white">
+  <div class="flex justify-center items-center mt-16">
+    <div id="register" class=" flex rounded-lg justify-center items-center w-96 h-96 border-gray-500 shadow-2x">
       <el-form @keyup.enter="handleRegistry" ref="formRef" :model="form" :rules="rules" label-width="auto" class="w-64 flex flex-col items-center">
         <el-form-item label="账号" prop="username">
           <el-input v-model="form.username"></el-input>
@@ -69,7 +69,7 @@ const refreshImage = () => {
 // 注册
 const router = useRouter()
 const dialog = useDialog()
-const message = useMessage();
+const messager = useMessage();
 const handleRegistry = () => {
   formRef.value.validate(validate => {
     if (validate) {
@@ -80,11 +80,15 @@ const handleRegistry = () => {
         negativeText: '取消',
         onPositiveClick:() => {
           router.push('/login')
-          message.success('转跳中')
+          messager.success('转跳中')
         },
-        onNegativeClick:() => message.success('╮(╯-╰)╭')
+        onNegativeClick:() => messager.success('╮(╯-╰)╭')
       })
-      }).catch(msg => message.error(msg))
+      }).catch(err => {
+        messager.error(err)
+        form.code = null
+        refreshImage()
+      })
     }
   })
 }

@@ -5,8 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kaijia.blog.controller.vo.VArticle;
 import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.system.service.ISysLogininforService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,6 +41,7 @@ public class BlogArticleController extends BaseController
 {
     @Autowired
     private IBlogArticleService blogArticleService;
+
 
     /**
      * 客户端查询文章
@@ -91,11 +97,12 @@ public class BlogArticleController extends BaseController
     /**
      * 新增文章管理
      */
-    @PreAuthorize("@ss.hasPermi('blog:article:add')")
+    @PreAuthorize("@ss.hasRole('manager')")
     @Log(title = "文章管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BlogArticle blogArticle)
     {
+        blogArticle.setAuthorId(SecurityUtils.getUserId());
         return toAjax(blogArticleService.insertBlogArticle(blogArticle));
     }
 
