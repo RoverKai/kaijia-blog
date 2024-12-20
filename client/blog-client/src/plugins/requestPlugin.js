@@ -7,8 +7,8 @@ const service = axios.create({
   // baseURL: 'http://8.210.105.98:80/prod-api',
   // baseURL: 'http://192.168.1.193:8080',
   // baseURL: 'http://192.168.43.84:8080',
-  baseURL: 'http://192.168.1.192:8080',
-  // baseURL: 'http://localhost:8080',
+  // baseURL: 'http://192.168.1.192:8080',
+  baseURL: 'http://localhost:8080',
   timeout: 10000, // 超时时间
 });
 

@@ -57,6 +57,7 @@
             and a.status = 'published'
         </where>
         group by a.id, a.title, a.create_time, a.category_id, a.view_count
+        order by a.create_time desc
     </select>
 
     <select id="selectBlogArticleList" parameterType="BlogArticle" resultMap="BlogArticleResult">

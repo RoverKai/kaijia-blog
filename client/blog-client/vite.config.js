@@ -7,6 +7,11 @@ export default defineConfig({
   // VITE_APP_BASE_API : 'localhost:8080/',
   server: {
     host: '0.0.0.0'
+  },
+  base: '/',
+  build: {
+    outDir: 'blog',
+    assetsDir: 'assets'
   }
 })
 
