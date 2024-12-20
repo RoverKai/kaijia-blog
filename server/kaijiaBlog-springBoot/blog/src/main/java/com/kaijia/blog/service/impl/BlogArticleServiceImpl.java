@@ -34,11 +34,9 @@ public class BlogArticleServiceImpl implements IBlogArticleService
      * @return 文章管理
      */
     @Override
-    public BlogArticle selectBlogArticleById(Long id, Long userId)
+    public BlogArticle selectBlogArticleById(Long id)
     {
         BlogArticle blogArticle = blogArticleMapper.selectBlogArticleById(id);
-
-
         return blogArticle;
     }
     @Override

@@ -43,10 +43,10 @@ public class BlogCommentController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('blog:comment:list')")
     @Anonymous
     @GetMapping("/list")
-    public TableDataInfo list(BlogComment blogComment)
+    public TableDataInfo list(VComment blogComment)
     {
         startPage();
-        List<BlogComment> list = blogCommentService.selectBlogCommentList(blogComment);
+        List<VComment> list = blogCommentService.selectBlogCommentList(blogComment);
         return getDataTable(list);
     }
 
@@ -65,10 +65,10 @@ public class BlogCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('blog:comment:export')")
     @Log(title = "评论管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BlogComment blogComment)
+    public void export(HttpServletResponse response, VComment blogComment)
     {
-        List<BlogComment> list = blogCommentService.selectBlogCommentList(blogComment);
-        ExcelUtil<BlogComment> util = new ExcelUtil<BlogComment>(BlogComment.class);
+        List<VComment> list = blogCommentService.selectBlogCommentList(blogComment);
+        ExcelUtil<VComment> util = new ExcelUtil<VComment>(VComment.class);
         util.exportExcel(response, list, "评论管理数据");
     }
 

@@ -27,7 +27,7 @@ public interface IBlogCommentService
      * @param blogComment 评论管理
      * @return 评论管理集合
      */
-    public List<BlogComment> selectBlogCommentList(BlogComment blogComment);
+    public List<VComment> selectBlogCommentList(VComment blogComment);
     public List<VComment> selectComment4Article(VComment vComment);
     /**
      * 新增评论管理

@@ -41,7 +41,7 @@ public class BlogCommentServiceImpl implements IBlogCommentService
      * @return 评论管理
      */
     @Override
-    public List<BlogComment> selectBlogCommentList(BlogComment blogComment)
+    public List<VComment> selectBlogCommentList(VComment blogComment)
     {
         return blogCommentMapper.selectBlogCommentList(blogComment);
     }

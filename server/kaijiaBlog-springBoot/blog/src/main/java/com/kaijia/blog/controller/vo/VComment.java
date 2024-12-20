@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class VComment extends BlogComment {
-
+    private String articleTitle;
+    private String parentComment;
     private String userName;
 }

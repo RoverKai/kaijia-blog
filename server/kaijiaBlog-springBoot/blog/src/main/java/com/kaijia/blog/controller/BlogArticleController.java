@@ -86,12 +86,18 @@ public class BlogArticleController extends BaseController
     @GetMapping(value = "/{id}/{userId}")
     public AjaxResult getInfo(@PathVariable("id") Long id, @PathVariable Long userId)
     {
-        BlogArticle blogArticle = blogArticleService.selectBlogArticleById(id, userId);
+        BlogArticle blogArticle = blogArticleService.selectBlogArticleById(id);
 
         BlogArticle article = blogArticleService.updateViewCount(blogArticle);
 
         article.setIsLike(blogArticleService.hasUserLikedArticle(article.getId(), userId));
         return success(article);
+    }
+    @PreAuthorize("@ss.hasRole('manager')")
+    @GetMapping(value = "/{articleId}")
+    public AjaxResult getArticleInfo(@PathVariable("articleId") Long articleId) {
+        BlogArticle blogArticle = blogArticleService.selectBlogArticleById(articleId);
+        return success(blogArticle);
     }
 
     /**

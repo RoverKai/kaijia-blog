@@ -1,26 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文章ID" prop="articleId">
+      <el-form-item label="文章标题" prop="articleTitle">
         <el-input
-          v-model="queryParams.articleId"
-          placeholder="请输入文章ID"
+          v-model="queryParams.articleTitle"
+          placeholder="请输入文章标题"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
+      <el-form-item label="用户名称" prop="userName">
         <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户ID"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="父评论ID" prop="parentId">
-        <el-input
-          v-model="queryParams.parentId"
-          placeholder="请输入父评论ID"
+          v-model="queryParams.userName"
+          placeholder="请输入用户名称"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -84,10 +76,10 @@
     <el-table v-loading="loading" :data="commentList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="文章ID" align="center" prop="articleId" />
-      <el-table-column label="用户ID" align="center" prop="userId" />
+      <el-table-column label="文章标题" align="center" prop="articleTitle" />
+      <el-table-column label="用户名" align="center" prop="userName" />
       <el-table-column label="评论内容" align="center" prop="content" />
-      <el-table-column label="父评论ID" align="center" prop="parentId" />
+      <el-table-column label="父评论" align="center" prop="parentComment" />
       <el-table-column label="评论时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -155,10 +147,10 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    articleId: null,
-    userId: null,
+    articleTitle: null,
+    userName: null,
     content: null,
-    parentId: null,
+    parentComment: null,
     createTime: null
   },
   rules: {
@@ -200,9 +192,12 @@ function reset() {
   form.value = {
     id: null,
     articleId: null,
+    articleTitle: null,
     userId: null,
+    userName: null,
     content: null,
     parentId: null,
+    parentComment: null,
     createTime: null
   };
   proxy.resetForm("commentRef");
