@@ -3,6 +3,7 @@ package com.kaijia.blog.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kaijia.blog.controller.vo.VArticleLike;
 import com.kaijia.blog.domain.BlogArticleLike;
 
 /**
@@ -27,7 +28,7 @@ public interface IBlogArticleLikeService
      * @param blogArticleLike 点赞管理
      * @return 点赞管理集合
      */
-    public List<BlogArticleLike> selectBlogArticleLikeList(BlogArticleLike blogArticleLike);
+    public List<VArticleLike> selectBlogArticleLikeList(VArticleLike blogArticleLike);
 
     /**
      * 新增点赞管理

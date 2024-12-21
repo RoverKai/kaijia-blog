@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kaijia.blog.controller.vo.VArticleLike;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +43,10 @@ public class BlogArticleLikeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('blog:articleLike:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BlogArticleLike blogArticleLike)
+    public TableDataInfo list(VArticleLike blogArticleLike)
     {
         startPage();
-        List<BlogArticleLike> list = blogArticleLikeService.selectBlogArticleLikeList(blogArticleLike);
+        List<VArticleLike> list = blogArticleLikeService.selectBlogArticleLikeList(blogArticleLike);
         return getDataTable(list);
     }
 
@@ -54,10 +56,10 @@ public class BlogArticleLikeController extends BaseController
     @PreAuthorize("@ss.hasPermi('blog:articleLike:export')")
     @Log(title = "点赞管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BlogArticleLike blogArticleLike)
+    public void export(HttpServletResponse response, VArticleLike blogArticleLike)
     {
-        List<BlogArticleLike> list = blogArticleLikeService.selectBlogArticleLikeList(blogArticleLike);
-        ExcelUtil<BlogArticleLike> util = new ExcelUtil<BlogArticleLike>(BlogArticleLike.class);
+        List<VArticleLike> list = blogArticleLikeService.selectBlogArticleLikeList(blogArticleLike);
+        ExcelUtil<VArticleLike> util = new ExcelUtil<VArticleLike>(VArticleLike.class);
         util.exportExcel(response, list, "点赞管理数据");
     }
 

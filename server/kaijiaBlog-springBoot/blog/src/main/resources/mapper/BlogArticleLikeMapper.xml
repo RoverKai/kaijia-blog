@@ -10,11 +10,18 @@
         <result property="createTime"    column="create_time"    />
     </resultMap>
 
+    <resultMap id="VArticleLikeResult" type="VArticleLike" extends="BlogArticleLikeResult">
+        <result property="userName" column="user_name"/>
+        <result property="articleTitle" column="title"/>
+    </resultMap>
+
     <sql id="selectBlogArticleLikeVo">
-        select article_id, user_id, create_time from blog_article_like
+        select a.article_id, c.title, b.user_name, a.user_id, a.create_time from blog_article_like as a
+        left join sys_user as b on a.user_id = b.user_id
+        left join blog_article as c on a.article_id = c.id
     </sql>
 
-    <select id="selectBlogArticleLikeList" parameterType="BlogArticleLike" resultMap="BlogArticleLikeResult">
+    <select id="selectBlogArticleLikeList" parameterType="BlogArticleLike" resultMap="VArticleLikeResult">
         <include refid="selectBlogArticleLikeVo"/>
         <where>
             <if test="articleId != null "> and article_id = #{articleId}</if>

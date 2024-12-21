@@ -3,6 +3,7 @@ package com.kaijia.blog.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.kaijia.blog.controller.vo.VArticleLike;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class BlogArticleLikeServiceImpl implements IBlogArticleLikeService {
      * @return 点赞管理
      */
     @Override
-    public List<BlogArticleLike> selectBlogArticleLikeList(BlogArticleLike blogArticleLike) {
+    public List<VArticleLike> selectBlogArticleLikeList(VArticleLike blogArticleLike) {
         return blogArticleLikeMapper.selectBlogArticleLikeList(blogArticleLike);
     }
 

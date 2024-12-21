@@ -1,17 +1,26 @@
 package com.kaijia.blog.controller;
 
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kaijia.blog.controller.vo.VArticle;
+import com.kaijia.blog.domain.BlogVisitLog;
+import com.kaijia.blog.service.IBlogVisitLogService;
 import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.service.ISysLogininforService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.TokenService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,7 +50,8 @@ public class BlogArticleController extends BaseController
 {
     @Autowired
     private IBlogArticleService blogArticleService;
-
+    @Autowired
+    private IBlogVisitLogService blogVisitLogService;
 
     /**
      * 客户端查询文章
@@ -84,15 +94,24 @@ public class BlogArticleController extends BaseController
      */
     @Anonymous
     @GetMapping(value = "/{id}/{userId}")
+    @Transactional
     public AjaxResult getInfo(@PathVariable("id") Long id, @PathVariable Long userId)
     {
         BlogArticle blogArticle = blogArticleService.selectBlogArticleById(id);
-
         BlogArticle article = blogArticleService.updateViewCount(blogArticle);
+
+        BlogVisitLog blogVisitLog = new BlogVisitLog();
+        String remoteAddr = ServletUtils.getRequest().getRemoteAddr();
+        blogVisitLog.setArticleId(id);
+        blogVisitLog.setUserId(userId);
+        blogVisitLog.setVisitedAt(DateUtils.getNowDate());
+        blogVisitLog.setIpAddress(remoteAddr);
+        blogVisitLogService.insertBlogVisitLog(blogVisitLog);
 
         article.setIsLike(blogArticleService.hasUserLikedArticle(article.getId(), userId));
         return success(article);
     }
+
     @PreAuthorize("@ss.hasRole('manager')")
     @GetMapping(value = "/{articleId}")
     public AjaxResult getArticleInfo(@PathVariable("articleId") Long articleId) {
