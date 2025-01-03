@@ -11,11 +11,13 @@
   "dependencies": {
     "axios": "^1.7.7",
     "danmaku-vue": "^1.0.2",
-    "element-plus": "^2.8.6",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.18",
     "md-editor-v3": "^4.21.1",
     "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^4.1.1",
     "vue": "^3.5.10",
+    "vue-i18n": "^10.0.5",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {

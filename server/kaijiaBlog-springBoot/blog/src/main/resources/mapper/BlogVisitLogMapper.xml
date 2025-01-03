@@ -12,16 +12,25 @@
         <result property="visitedAt"    column="visited_at"    />
     </resultMap>
 
+    <resultMap id="VArticleVisitLogResult" type="VArticleVisitLog" extends="BlogVisitLogResult">
+        <result property="userName" column="user_name"/>
+        <result property="articleTitle" column="title"/>
+    </resultMap>
+
     <sql id="selectBlogVisitLogVo">
-        select id, article_id, user_id, ip_address, visited_at from blog_visit_log
+        select a.id, a.article_id, c.title, a.user_id, b.user_name, a.ip_address, a.visited_at from blog_visit_log as a
+        left join sys_user as b on a.user_id = b.user_id
+        left join blog_article c on a.article_id = c.id
     </sql>
 
-    <select id="selectBlogVisitLogList" parameterType="BlogVisitLog" resultMap="BlogVisitLogResult">
+    <select id="selectBlogVisitLogList" parameterType="VArticleVisitLog" resultMap="VArticleVisitLogResult">
         <include refid="selectBlogVisitLogVo"/>
         <where>
             <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="articleTitle != null and articleTitle != ''">and title like concat('%',#{articleTitle},'%')</if>
             <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="ipAddress != null  and ipAddress != ''"> and ip_address like concat('%', #{ipAddress}, '%')</if>
+            <if test="userName != null and userName != ''">and user_name like concat('%',#{userName},'%')</if>
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address like concat('%',#{ipAddress},'%')</if>
             <if test="params.beginVisitedAt != null and params.beginVisitedAt != '' and params.endVisitedAt != null and params.endVisitedAt != ''"> and visited_at between #{params.beginVisitedAt} and #{params.endVisitedAt}</if>
         </where>
     </select>

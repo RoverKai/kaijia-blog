@@ -1,15 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import home from "../pages/home.vue";
+import intro from "../pages/intro.vue";
 const routes = [
   //重定向
   { 
     path: '/',
-    redirect: '/home'
+    redirect: '/intro'
+  },
+  // intro
+  { 
+    path: '/intro',
+    component: intro
   },
   //主页
   {
     path: '/home',
-    component: home
+    component: () => import("../pages/home.vue")
   },
   //文章详情页
   {

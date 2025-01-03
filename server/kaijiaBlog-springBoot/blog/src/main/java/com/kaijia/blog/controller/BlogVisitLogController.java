@@ -2,6 +2,8 @@ package com.kaijia.blog.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kaijia.blog.controller.vo.VArticleVisitLog;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +41,10 @@ public class BlogVisitLogController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('blog:log:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BlogVisitLog blogVisitLog)
+    public TableDataInfo list(VArticleVisitLog blogVisitLog)
     {
         startPage();
-        List<BlogVisitLog> list = blogVisitLogService.selectBlogVisitLogList(blogVisitLog);
+        List<VArticleVisitLog> list = blogVisitLogService.selectBlogVisitLogList(blogVisitLog);
         return getDataTable(list);
     }
 
@@ -52,10 +54,10 @@ public class BlogVisitLogController extends BaseController
     @PreAuthorize("@ss.hasPermi('blog:log:export')")
     @Log(title = "浏览记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BlogVisitLog blogVisitLog)
+    public void export(HttpServletResponse response, VArticleVisitLog blogVisitLog)
     {
-        List<BlogVisitLog> list = blogVisitLogService.selectBlogVisitLogList(blogVisitLog);
-        ExcelUtil<BlogVisitLog> util = new ExcelUtil<BlogVisitLog>(BlogVisitLog.class);
+        List<VArticleVisitLog> list = blogVisitLogService.selectBlogVisitLogList(blogVisitLog);
+        ExcelUtil<VArticleVisitLog> util = new ExcelUtil<VArticleVisitLog>(VArticleVisitLog.class);
         util.exportExcel(response, list, "浏览记录数据");
     }
 

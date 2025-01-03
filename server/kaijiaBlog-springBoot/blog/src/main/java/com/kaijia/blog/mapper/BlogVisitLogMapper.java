@@ -1,6 +1,8 @@
 package com.kaijia.blog.mapper;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VArticleVisitLog;
 import com.kaijia.blog.domain.BlogVisitLog;
 
 /**
@@ -25,7 +27,7 @@ public interface BlogVisitLogMapper
      * @param blogVisitLog 浏览记录
      * @return 浏览记录集合
      */
-    public List<BlogVisitLog> selectBlogVisitLogList(BlogVisitLog blogVisitLog);
+    public List<VArticleVisitLog> selectBlogVisitLogList(VArticleVisitLog blogVisitLog);
 
     /**
      * 新增浏览记录

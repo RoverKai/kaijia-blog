@@ -87,7 +87,9 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="id" />
       <el-table-column label="文章ID" align="center" prop="articleId" />
+      <el-table-column label="文章标题" align="center" prop="articleTitle" />
       <el-table-column label="用户ID" align="center" prop="userId" />
+      <el-table-column label="用户名" align="center" prop="userName" />
       <el-table-column label="访问者IP地址" align="center" prop="ipAddress" />
       <el-table-column label="访问时间" align="center" prop="visitedAt" width="180">
         <template #default="scope">

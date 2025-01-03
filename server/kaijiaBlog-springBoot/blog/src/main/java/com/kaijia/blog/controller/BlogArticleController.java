@@ -1,25 +1,18 @@
 package com.kaijia.blog.controller;
 
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kaijia.blog.controller.vo.VArticle;
 import com.kaijia.blog.domain.BlogVisitLog;
 import com.kaijia.blog.service.IBlogVisitLogService;
 import com.ruoyi.common.annotation.Anonymous;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.http.HttpUtils;
-import com.ruoyi.system.service.ISysLogininforService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,11 +94,19 @@ public class BlogArticleController extends BaseController
         BlogArticle article = blogArticleService.updateViewCount(blogArticle);
 
         BlogVisitLog blogVisitLog = new BlogVisitLog();
-        String remoteAddr = ServletUtils.getRequest().getRemoteAddr();
+//        获取ip
+        HttpServletRequest request = ServletUtils.getRequest();
+        String ip = request.getHeader("X-Forwarded-FOr");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        } else {
+            ip = ip.split(",")[0];
+        }
+
         blogVisitLog.setArticleId(id);
         blogVisitLog.setUserId(userId);
         blogVisitLog.setVisitedAt(DateUtils.getNowDate());
-        blogVisitLog.setIpAddress(remoteAddr);
+        blogVisitLog.setIpAddress(ip);
         blogVisitLogService.insertBlogVisitLog(blogVisitLog);
 
         article.setIsLike(blogArticleService.hasUserLikedArticle(article.getId(), userId));

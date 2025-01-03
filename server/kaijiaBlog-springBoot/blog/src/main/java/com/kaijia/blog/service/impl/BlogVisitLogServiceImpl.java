@@ -1,6 +1,8 @@
 package com.kaijia.blog.service.impl;
 
 import java.util.List;
+
+import com.kaijia.blog.controller.vo.VArticleVisitLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kaijia.blog.mapper.BlogVisitLogMapper;
@@ -38,7 +40,7 @@ public class BlogVisitLogServiceImpl implements IBlogVisitLogService
      * @return 浏览记录
      */
     @Override
-    public List<BlogVisitLog> selectBlogVisitLogList(BlogVisitLog blogVisitLog)
+    public List<VArticleVisitLog> selectBlogVisitLogList(VArticleVisitLog blogVisitLog)
     {
         return blogVisitLogMapper.selectBlogVisitLogList(blogVisitLog);
     }
