@@ -1,11 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 自定义错误消息的颜色 */
-.el-form-item__error {
-  color: #7c1823 !important; /* 这里设置你想要的颜色，比如番茄红色 */
-  font-weight: normal; /* 可选：让字体加粗 */
-  font-size: 14px; /* 可选：调整字体大小 */
+
+* {
+  padding: 0;
+  margin: 0;
+  /* border: 1px solid red; */
+}
+
+body {
+  overflow: hidden;
+}
+
+select {
+  border-radius: 10px;
 }
 
 

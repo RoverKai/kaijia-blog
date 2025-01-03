@@ -1,59 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <danmaku :danmus="danmuList" style="width: 100%; height: 150px;" />
-    <div class="w-2/3 flex flex-col items-center">
-      <n-input-group id="searchBar" class="mb-12 *:rounded-md min-w-96 w-2/3">
-        <n-dropdown trigger="hover" class="dark:bg-darkColor4" :options="categoryList" @select="handleCategory">
-          <n-button :theme="darkTheme" class="dark:text-darkColor4">{{ categoryBtnName }}</n-button>
-        </n-dropdown>
-        <n-input class="text-center dark:text-darkColor4" :theme="darkTheme" @keyup.enter="handleSearch"
-          placeholder="比旁边的按钮更直接" v-model:value="queryParams.content" />
-        <n-button @click="handleSearch" :theme="darkTheme" class="dark:text-darkColor4">搜索</n-button>
-        <n-button @click="sendDanmu" :theme="darkTheme" class="dark:text-darkColor4">发送弹幕</n-button>
-      </n-input-group>
-      <div class="h-52 md:h-48 min-w-96 md:w-2/3">
-        <n-infinite-scroll :distance="40" @load="handleLoad">
-          <div @click="toDetail(article.id)" v-for="(article, index) in articles" :key="index" id="article"
-            class="cursor-pointer rounded h-8 w-full shadow-xl mb-4 md:mb-3 last:mb-0 dark:bg-darkColor2">
-            <div class="title rounded text-center flex flex-col">
-              <div class="flex dark:bg-darkColor2 items-center justify-between *:flex *:items-center *:mr-2 *:*:mr-1">
-                <div class="font-bold basis-64 dark:text-darkColor4">《{{ article.title }}》</div>
-                <div class="dark:text-darkColor4">
-                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 576 512">
-                    <path
-                      d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144a143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79a47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"
-                      fill="currentColor"></path>
-                  </svg>
-                  <div>{{ article.viewCount }}</div>
-                </div>
-                <div class="dark:text-darkColor4">
-                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 12 12">
-                    <g fill="none">
-                      <path
-                        d="M5.656 2.737a2.394 2.394 0 0 0-3.447-.01c-.95.975-.945 2.559.01 3.537l3.53 3.623c.146.15.384.15.53 0l3.513-3.602a2.548 2.548 0 0 0-.01-3.535a2.395 2.395 0 0 0-3.45-.009l-.336.345l-.34-.35z"
-                        fill="currentColor"></path>
-                    </g>
-                  </svg>
-                  <div>{{ article.likeCount }}</div>
-                </div>
-                <div class="dark:text-darkColor4">
-                  <svg class="size-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 24 24">
-                    <path opacity=".3" d="M5 8h14V6H5z" fill="currentColor"></path>
-                    <path
-                      d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"
-                      fill="currentColor"></path>
-                  </svg>
-                  <div class="font-serif">{{ article.createTime.substr(0, 10) }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </n-infinite-scroll>
-      </div>
-    </div>
+    
   </div>
 </template>
 
@@ -61,8 +8,7 @@
 <script setup>
 import { ref, onMounted, getCurrentInstance, watch, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { NInfiniteScroll, NInput, NInputGroup, NButton, NDropdown, useMessage, darkTheme } from 'naive-ui';
-import Danmaku from 'danmaku-vue'
+import { useMessage } from 'naive-ui';
 import { useAuthStore } from '../stores/token';
 const articles = ref([])
 const proxy = getCurrentInstance().proxy;

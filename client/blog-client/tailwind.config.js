@@ -7,10 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkColor1: '#1E201E',
+        // '#1E201E'
+        darkColor1: '#1b1b1b',
         darkColor2: '#3C3D37',
         darkColor3: '#697565',
-        darkColor4: '#ECDFCC'
+        darkColor4: '#ECDFCC',
+        fontColor1: '#33272a',
+        backgroundColor1: '#6f9986',
       },
       boxShadow: {
         'soft-white': '0 0 20px rgba(255, 255, 255, 0.2), 0 0 40px rgba(255, 255, 255, 0.1)',
@@ -20,5 +23,4 @@ export default {
   plugins: [],
   //暗色主题
   darkMode: 'class',
-  important: true
 }

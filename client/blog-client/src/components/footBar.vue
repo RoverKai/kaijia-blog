@@ -21,12 +21,12 @@ onMounted(() => {
   <div class="flex flex-col items-center md:flex md:flex-row md:justify-around" id="footbar">
     <hr class="w-2/3" v-if="isMobileDevice">
     <div class="font-serif flex flex-col items-center text-center w-1/5 md:mt-4 dark:text-darkColor4">
-      contact me:
+      {{ $t('button.contactMe') }}
       <div class="dark:text-darkColor4">
         2196140098@qq.com
       </div>
       <div class="dark:text-darkColor4">
-        roverkai007@gmail.com
+        rover.kai007@gmail.com
       </div>
     </div>
     <hr class="w-3/4" v-if="isMobileDevice">
